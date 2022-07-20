@@ -1,32 +1,33 @@
 import os
-import random
+import sys
 import time
-from subprocess import PIPE, Popen, STDOUT
+import subprocess
+import random
 
-directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'videos')
+global playlistlink
+playlistlink = "https://youtube.com/playlist?list=PLuKpO2KmUaHC84gQgcWEaxGau3uV6HVVs"
 
-videos = []
+backgroundloop = ['omxplayer', '--no-osd', '--loop', '--layer', '1', '--aspect-mode', 'fill', 'samples/static.mp4']
+playstatic = subprocess.Popen(backgroundloop, stdin=subprocess.PIPE)
 
+while True:
+    command = ['yt-dlp', '-i', '--no-warnings', '--yes-playlist', '--playlist-end', '1', '--print', '"%(playlist_count)s"', playlistlink]
+    print(command)
 
-def getVideos():
-    global videos
-    videos = []
-    for file in os.listdir(directory):
-        if file.lower().endswith('.mp4'):
-            videos.append(os.path.join(directory, file))
+    p = subprocess.Popen(command,
+                        shell=False,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE)
+    p.wait()
+    stdout, stderr = p.communicate()
+    number = int(((stdout.decode('ascii')).strip()).replace('"', '')) #convert to int
+    print(number)
 
+    randomlist = random.sample(range(1, number+1), number)
+    print(randomlist)
 
-def playVideos():
-    global videos
-    if len(videos) == 0:
-        getVideos()
-        time.sleep(5)
-        return
-    random.shuffle(videos)
-    for video in videos:
-        playProcess = Popen(['omxplayer', '--no-osd', '--aspect-mode', 'fill', video])
-        playProcess.wait()
-
-
-while (True):
-    playVideos()
+    for x in range(1, (number+1)):
+        print('playing ' + str(randomlist[x-1]) + ' of ' + str(number))
+        commandyt = 'omxplayer --layer 2 --no-osd --aspect-mode fill `yt-dlp -g -f 18 --no-warnings --playlist-items ' + str(randomlist[x-1]) + " " + playlistlink + '`'
+        playyt = subprocess.Popen(commandyt, shell=True)
+        playyt.wait()
