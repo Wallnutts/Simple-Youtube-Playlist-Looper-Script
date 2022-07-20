@@ -4,3 +4,4 @@
 
 This project is loosely based on the SimpsonsTV project by [Brandon Withrow](https://withrow.io/simpsons-tv-build-guide-waveshare#installing-os) but I decided to adapt it to suit my goals as well as with other ease of life improvements.
 
+![Alt Text](https://github.com/Wallnutts/Simple-Youtube-Playlist-Looper-Script/blob/main/tv.gif)
