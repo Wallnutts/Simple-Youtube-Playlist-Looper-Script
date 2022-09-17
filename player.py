@@ -7,7 +7,7 @@ import random
 global playlistlink
 
 #put your youtube playlist link here 
-playlistlink = "https://youtube.com/playlist?list=PLuKpO2KmUaHC84gQgcWEaxGau3uV6HVVs"
+playlistlink = "PUT-YOUR-LINK-HERE"
 
 #initialise static video on layer 1 
 backgroundloop = ['omxplayer', 
